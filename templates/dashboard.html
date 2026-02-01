@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+
+    <div class="hero-section">
+        <div class="hero-badge">✨ Smart Scheduling</div>
+        <h1 class="hero-title">Academic Scheduling<br>Reimagined.</h1>
+        <p class="hero-subtitle">Effortlessly manage time slots, faculty allocations, and conflict-free timetables with
+            EduSync's intelligent generator.</p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="features-grid">
+
+        <!-- Generate Tile -->
+        <a href="{% url 'setup' %}">
+            <div class="dashboard-card card-generate">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
+                </div>
+                <h2 class="card-title">Generate New</h2>
+                <p class="card-desc">Configure parameters and automatically generate a conflict-free timetable.</p>
+            </div>
+        </a>
+
+        <!-- View Current Tile -->
+        <a href="{% url 'timetable' %}">
+            <div class="dashboard-card card-view">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+                <h2 class="card-title">Active Timetable</h2>
+                <p class="card-desc">View, edit, and export the currently active semester timetable.</p>
+            </div>
+        </a>
+
+        <!-- History Tile -->
+        <a href="{% url 'history' %}">
+            <div class="dashboard-card card-history">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h2 class="card-title">Archives</h2>
+                <p class="card-desc">Access and review past timetables and generation history.</p>
+            </div>
+        </a>
+
+    </div>
+
+    {% if messages %}
+    <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+        {% for message in messages %}
+        <div class="alert {{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

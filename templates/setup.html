@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div
+    style="max-width: 600px; margin: 40px auto; padding: 30px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center; color: #333;">Timetable Configuration</h2>
+    <p style="text-align: center; color: #666; margin-bottom: 30px;">Initialize your department timetable structure.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            {% for field in form %}
+            <div style="display: flex; flex-direction: column;">
+                <label style="font-weight: bold; margin-bottom: 5px; color: #444;">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <div style="color: red; font-size: 0.9em;">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div style="margin-top: 30px; text-align: center;">
+                <button type="submit"
+                    onclick="return confirm('This will reset the current timetable structure. Continue?')"
+                    style="padding: 12px 30px; background-color: #28a745; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;">Generate
+                    Structure</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

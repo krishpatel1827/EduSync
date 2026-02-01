@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="timetable-header">
+    <h1>L.J. INSTITUTE OF ENGINEERING AND TECHNOLOGY, L.J. UNIVERSITY</h1>
+    <h2>SY CE/IT- 4 DEPARTMENT</h2>
+    <h3>SEM-III TIME TABLE w.e.f 15th Septmber 2025</h3>
+    <div style="margin-top: 10px; display:flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <a href="{% url 'dashboard' %}"
+            style="padding: 5px 10px; background-color: #343a40; color: white; text-decoration: none; border-radius: 4px;">&larr;
+            Dashboard</a>
+        <a href="{% url 'add_entry' %}"
+            style="padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px;">+
+            Add Entry</a>
+        <a href="{% url 'setup' %}"
+            style="padding: 5px 10px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px;">⚙
+            Configure / Reset</a>
+
+        {% if current_timetable %}
+        <div style="margin-left: auto;">
+            <a href="{% url 'export_excel' current_timetable.id %}"
+                style="padding: 5px 10px; background-color: #28a745; color: white; text-decoration: none; border-radius: 4px;">Export
+                Excel</a>
+            <a href="{% url 'export_pdf' current_timetable.id %}"
+                style="padding: 5px 10px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 4px;">Export
+                PDF</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<script>
+    alert("{{ message|escapejs }}");
+</script>
+{% endfor %}
+{% endif %}
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th rowspan="2" class="col-day">DAY</th>
+                <th rowspan="2" class="col-lecture">LEC NO</th>
+                <th class="col-time">DIVISION</th>
+                {% for div in divisions %}
+                <th colspan="3">{{ div.name }}</th>
+                {% endfor %}
+                <th rowspan="2" class="col-day">DAY</th> <!-- Right side day column -->
+            </tr>
+            <tr>
+                <th>TIME/ ROOM NO.</th>
+                {% for div in divisions %}
+                <th>Subject</th>
+                <th>Faculty</th>
+                <th>Room No</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for day in timetable_data %}
+            {% with day.slots as slots %}
+            {% for slot_data in slots %}
+            <tr>
+                {% if forloop.first %}
+                <td rowspan="{{ slots|length }}" class="day-cell">{{ day.day_code }}</td>
+                {% endif %}
+
+                <td>{{ slot_data.slot.lecture_number }}</td>
+
+                {% if slot_data.slot.is_break %}
+                <!-- Break Row Logic: Spanning all content columns -->
+                <!-- Actually, the image shows break is a separate row entirely? 
+                                  Or just specific slots. 
+                                  Models say 'is_break'. If is_break, spans all? -->
+                <td colspan="{{ divisions|length|add:1 }}">BREAK: {{ slot_data.slot.start_time }} to {{
+                    slot_data.slot.end_time }}</td>
+                {% else %}
+                <td>{{ slot_data.slot.start_time|date:"g:ia" }} to {{ slot_data.slot.end_time|date:"g:ia" }}</td>
+
+                {% for div in divisions %}
+                {% with slot_data.entries|get_item:div.id as entry %}
+                {% if entry %}
+                <td>
+                    <div class="cell-entry subject">{{ entry.subject.code }}</div>
+                </td>
+                <td>
+                    <div class="cell-entry faculty">{{ entry.faculty.initials }}</div>
+                </td>
+                <td>
+                    <div class="cell-entry room">{{ entry.room.number }}</div>
+                </td>
+                {% else %}
+                <td></td>
+                <td></td>
+                <td></td>
+                {% endif %}
+                {% endwith %}
+                {% endfor %}
+                {% endif %}
+
+                {% if forloop.first %}
+                <td rowspan="{{ slots|length }}" class="day-cell">{{ day.day_code }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            {% endwith %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Footer / Legend Area -->
+<div style="margin-top: 20px; border: 2px solid black; padding: 10px; background: #e0e0e0; text-align: center;">
+    <strong>SEMESTER III</strong>
+</div>
+<div style="display: flex; width: 100%; border: 2px solid black; border-top: none;">
+    <div style="flex: 1; border-right: 1px solid black; padding: 5px;">
+        <strong>SUBJECT NAME</strong>
+        <!-- Ideally dynamic loop here -->
+    </div>
+    <div style="flex: 1; padding: 5px;">
+        <strong>FACULTY NAME</strong>
+        <!-- Ideally dynamic loop here -->
+    </div>
+</div>
+
+{% endblock %}

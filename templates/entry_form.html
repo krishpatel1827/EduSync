@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+    <h2>Add Timetable Entry</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            {% for field in form %}
+            <div style="display: flex; flex-direction: column;">
+                <label style="font-weight: bold; margin-bottom: 5px;">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <div style="color: red; font-size: 0.9em;">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div style="margin-top: 20px;">
+                <button type="submit"
+                    style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">Save
+                    Entry</button>
+                <a href="{% url 'timetable' %}"
+                    style="margin-left: 10px; text-decoration: none; color: #333;">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

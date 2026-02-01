@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 40px auto; padding: 20px;">
+    <h2 style="text-align: center; margin-bottom: 30px;">Timetable History</h2>
+
+    <div style="display: grid; gap: 15px;">
+        {% for tt in timetables %}
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background: white; border: 1px solid #eee; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <div>
+                <h3 style="margin: 0 0 5px 0;">{{ tt.name }}</h3>
+                <div style="font-size: 0.9em; color: #666;">Created: {{ tt.created_at|date:"M d, Y H:i" }}</div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <a href="{% url 'timetable' tt.id %}"
+                    style="padding: 8px 15px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">View</a>
+                {% if not tt.is_active %}
+                <!-- Option to activate? For now just View -->
+                {% else %}
+                <span
+                    style="padding: 8px 15px; background: #28a745; color: white; border-radius: 4px; font-size: 0.9em;">Active</span>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p style="text-align: center; color: #666;">No history found. Generate your first timetable!</p>
+        {% endfor %}
+    </div>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <a href="{% url 'dashboard' %}" style="color: #666; text-decoration: none;">&larr; Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timetable Generator</title>
+    {% load static %}
+    {% load custom_filters %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'dashboard' %}" class="nav-logo">
+                <span class="logo-icon">🎓</span> EduSync
+            </a>
+            <div class="nav-links">
+                <a href="{% url 'dashboard' %}" class="nav-item">Dashboard</a>
+                <a href="{% url 'timetable' %}" class="nav-item">Timetable</a>
+                <a href="{% url 'history' %}" class="nav-item">History</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 EduSync Scheduler. Built for L.J. University.</p>
+    </footer>
+</body>
+
+</html>
